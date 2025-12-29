@@ -37,7 +37,7 @@ class TestPet:
 
     @allure.title('Попытка получить информацию о несуществующем питомце')
     def test_get_nonexistent_pet(self):
-        with allure.step('Отправка запроса о получении информации о несуществующем питомце'):
+        with allure.step('Отправка запроса на получение информации о несуществующем питомце'):
             response = requests.get(url=f'{BASE_URL}/pet/9999')
 
         with allure.step('Проверка статуса ответа'):
