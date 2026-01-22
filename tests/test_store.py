@@ -64,7 +64,7 @@ class TestStore:
         with allure.step('Отправка запроса на получение информации о заказе после удаления'):
             response = requests.get(url=f'{BASE_URL}/store/order/{order_id}')
 
-        with allure.step('Проверка статсу ответа и текстового содержимого ответа'):
+        with allure.step('Проверка статуса ответа и текстового содержимого ответа'):
             assert response.status_code == 404, 'Код ответа не совпал с ожидаемым'
             assert response.text == 'Order not found', 'Текст ошибки не совпал с ожидаемым'
 
@@ -73,9 +73,9 @@ class TestStore:
         with allure.step('Отправка запроса на получение информации о несуществующем заказе'):
             response = requests.get(url=f'{BASE_URL}/store/order/9999')
 
-        with allure.step('Проверка статсу ответа и текствого содержимого ответа'):
+        with allure.step('Проверка статуса ответа и текствого содержимого ответа'):
             assert response.status_code == 404, 'Код ответа не совпал с ожидаемым'
-            assert response.text == 'Order not found', 'Текс ошибки не совпал с ожидаемым'
+            assert response.text == 'Order not found', 'Текст ошибки не совпал с ожидаемым'
 
     @allure.title('Получение инвентаря магазина')
     def test_get_inventory(self):
