@@ -82,6 +82,6 @@ class TestStore:
         with allure.step('Отправка запроса на получение инвентаря магазина'):
             response = requests.get(url=f'{BASE_URL}/store/inventory')
 
-        with allure.step('Проверка статуса ответа и формата данных'):
+        with allure.step('Проверка статуса ответа и валидация JSON-схемы'):
             assert response.status_code == 200, 'Код ответа не совпал с ожидаемым'
             jsonschema.validate(response.json(), INVENTORY_SCHEMA)
