@@ -1,30 +1,131 @@
 import pytest
-import requests
+import random
+import logging
+from api_client import client
 
-BASE_URL = 'http://5.181.109.28:9090/api/v3'
+logger = logging.getLogger(__name__)
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def create_pet():
-    '''Фикстура для создания питомца.'''
+    '''Фикстура для создания питомца'''
+
+    # Генерируем случайный ID, чтобы избежать конфликтов
+    pet_id = random.randint(1000, 9999)
+
     payload = {
-        'id': 1,
-        'name': 'Buddy',
+        'id': pet_id,
+        'name': f'TestPet_{pet_id}',
         'status': 'available'
     }
-    response = requests.post(url=f'{BASE_URL}/pet/', json=payload)
-    assert response.status_code == 200
-    return response.json()
 
-@pytest.fixture(scope='function')
-def create_order():
-    '''Фикстура для создания заказа.'''
+    logger.info(f'Creating pet with ID: {pet_id}')
+
+    # Создаем питомца (код ДО yield)
+    response = client.post('/pet', payload)
+
+    # Проверяем, что создание прошло успешно
+    assert response.status_code == 200, f'Failed to create pet: {response.text}'
+
+    # Получаем данные созданного питомца
+    pet_data = response.json()
+
+    # Возвращаем данные в тест
+    yield pet_data
+
+    # Очистка ПОСЛЕ теста (код ПОСЛЕ yield)
+    logger.info(f'Cleaning up pet with ID: {pet_id}')
+
+    try:
+        # Пытаемся удалить питомца
+        delete_response = client.delete(f'/pet/{pet_id}')
+
+        if delete_response.status_code == 200:
+            logger.info(f'Pet {pet_id} deleted successfully')
+        else:
+            logger.warning(f'Failed to delete pet {pet_id}: {delete_response.text}')
+    except Exception as e:
+        # Если удаление не удалось, просто логируем
+        logger.error(f'Error during leanup of pet {pet_id}: {str(e)}')
+
+@pytest.fixture
+def create_pet_full():
+    '''Фикстура для создания питомца со всеми полями'''
+
+    pet_id = random.randint(1000, 9999)
+
     payload = {
-        'id': 1,
-        'petId': 1,
+        'id': pet_id,
+        'name': 'doggie',
+        'category': {
+            'id': 1,
+            'name': 'Dogs'
+        },
+        'photoUrls': ['string'],
+        'tags': [
+            {
+                'id': 0,
+                'name': 'string'
+            }
+        ],
+        'status': 'available'
+    }
+
+    response = client.post('/pet', payload)
+    assert response.status_code == 200, f'Failed to create pet: {response.text}'
+
+    pet_data = response.json()
+
+    yield pet_data
+
+    logger.info(f'Cleaning up pet with ID: {pet_id}')
+
+    try:
+        delete_response = client.delete(f'/pet/{pet_id}')
+
+        if delete_response.status_code == 200:
+            logger.info(f'Pet {pet_id} deleted successfully')
+        else:
+            logger.warning(f'Failed to delete pet {pet_id}: {delete_response.text}')
+    except Exception as e:
+        logger.error(f'Error during leanup of pet {pet_id}: {str(e)}')
+
+
+@pytest.fixture
+def create_order():
+    '''Фикстура для создания заказа'''
+
+    # Фикстура может использовать другие фикстуры
+    # Здесь мы не создаем нового питомца, а используем существующего
+
+    # Генерируем случайный ID для заказа
+    order_id = random.randint(1000, 9999)
+
+    # Данные для заказа
+    payload = {
+        'id': order_id,
+        'petId': 1, # Используем фиксированный ID
         'quantity': 1,
         'status': 'placed',
         'complete': True
     }
-    response = requests.post(url=f'{BASE_URL}/store/order', json=payload)
-    assert response.status_code == 200
-    return response.json()
+
+    logger.info(f'Creating order with ID: {order_id}')
+
+    # Создаем заказ
+    response = client.post('/store/order', payload)
+    assert response.status_code == 200, f'Failed to create order: {response.text}'
+
+    order_data = response.json()
+
+    # Возвращаем данные в тест
+    yield order_data
+
+    # Очистка после теста
+    logger.info(f'Cleaning up order with ID: {order_id}')
+
+    try:
+        delete_response = client.delete(f'/store/order/{order_id}')
+        if delete_response.status_code == 200:
+            logger.info(f'Order {order_id} deleted successfully')
+    except Exception as e:
+        logger.error(f'Error during cleanup of order {order_id}: {str(e)}')
