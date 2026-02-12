@@ -1,6 +1,6 @@
 import requests
 import logging
-from config import config
+from core.config import config
 
 # Настраиваем логгер
 logger = logging.getLogger(__name__)
