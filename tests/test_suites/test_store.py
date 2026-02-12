@@ -30,7 +30,7 @@ class TestStore:
     @allure.title('Создание нового заказа')
     def test_create_order(self):
         '''Тест на создание нового заказа'''
-        with allure.step('Подготовка данных зааказ'):
+        with allure.step('Подготовка данных заказа'):
             order_id = random.randint(1000, 9999)
 
             payload = {
