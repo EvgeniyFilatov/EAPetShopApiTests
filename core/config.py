@@ -7,11 +7,14 @@ load_dotenv()
 class Config:
     def __init__(self):
         # Читаем BASE_URL из .env
-        self.BASE_URL = os.getenv('BASE_URL')
+        self.BASE_URL = os.getenv('BASE_URL').rstrip('/')
         if not self.BASE_URL:
             raise ValueError('BASE_URL не установлен в .env файле!')
         # Читаем TIMEOUT и преобразуем в число
-        self.TIMEOUT = int(os.getenv('TIMEOUT', '10')) # таймаут для запросов
+        try:
+            self.TIMEOUT = int(os.getenv('TIMEOUT', '10')) # таймаут для запросов
+        except ValueError:
+            self.TIMEOUT = 10  # значение по умолчанию если не число
         # Уровень логирования
         self.LOG_LEVEL = os.getenv('LOG_LEVEL')
 
