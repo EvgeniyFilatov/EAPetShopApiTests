@@ -57,7 +57,7 @@ class TestStore:
             assert order_data['complete'] == payload['complete']
 
         # Очистка
-        client.delete(f'/store/order/{payload['id']}')
+        client.delete(f'/store/order/{payload["id"]}')
 
     @allure.title('Получение заказа по ID')
     def test_get_order_by_id(self, create_order):
@@ -92,8 +92,6 @@ class TestStore:
 
         with allure.step('Проверка, что заказ удален'):
             get_response = client.get(f'/store/order/{order_id}')
-
-        with allure.step('Проверка статуса ответа'):
             assert get_response.status_code == 404, f'Код ответа не совпал с ожидаемым, код: {response.status_code}'
 
     # ===== НЕГАТИВНЫЕ ТЕСТЫ =====

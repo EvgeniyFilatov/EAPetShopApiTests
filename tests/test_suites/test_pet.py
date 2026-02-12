@@ -200,7 +200,7 @@ class TestPet:
 
     @allure.title('Обновление несуществующего питомца')
     def test_update_nonexistent_pet(self):
-        '''Тест на удаление несуществующего питомца'''
+        '''Тест на обновление несуществующего питомца'''
         pet_id = random.randint(10000, 99999)
 
         with allure.step('Подготовка данных'):

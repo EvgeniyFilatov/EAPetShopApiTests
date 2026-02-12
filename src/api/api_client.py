@@ -13,7 +13,7 @@ class APIClient:
         # Настраиваем заголовки для ВСЕХ запросов
         # Теперь не нужно каждый раз указывать Content-Type
         self.session.headers.update({
-            'Content_Type': 'application/json', # Мы отправляем JSON
+            'Content-Type': 'application/json', # Мы отправляем JSON
             'Accept': 'application/json' # Мы принимаем JSON
         })
         # Базовый URL из конфига

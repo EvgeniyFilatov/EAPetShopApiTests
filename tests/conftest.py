@@ -45,7 +45,7 @@ def create_pet():
             logger.warning(f'Failed to delete pet {pet_id}: {delete_response.text}')
     except Exception as e:
         # Если удаление не удалось, просто логируем
-        logger.error(f'Error during leanup of pet {pet_id}: {str(e)}')
+        logger.error(f'Error during сleanup of pet {pet_id}: {str(e)}')
 
 @pytest.fixture
 def create_pet_full():
@@ -87,15 +87,16 @@ def create_pet_full():
         else:
             logger.warning(f'Failed to delete pet {pet_id}: {delete_response.text}')
     except Exception as e:
-        logger.error(f'Error during leanup of pet {pet_id}: {str(e)}')
+        logger.error(f'Error during сleanup of pet {pet_id}: {str(e)}')
 
 
 @pytest.fixture
-def create_order():
+def create_order(create_pet):
     '''Фикстура для создания заказа'''
 
     # Фикстура может использовать другие фикстуры
     # Здесь мы не создаем нового питомца, а используем существующего
+    pet_id = create_pet['id'] # Используем реального питомца
 
     # Генерируем случайный ID для заказа
     order_id = random.randint(1000, 9999)
@@ -103,7 +104,7 @@ def create_order():
     # Данные для заказа
     payload = {
         'id': order_id,
-        'petId': 1, # Используем фиксированный ID
+        'petId': pet_id,
         'quantity': 1,
         'status': 'placed',
         'complete': True
