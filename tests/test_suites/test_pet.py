@@ -2,7 +2,7 @@ import allure
 import jsonschema
 import pytest
 import random
-from api_client import client
+from src.api.api_client import client
 from tests.schemas.pet_schema import PET_SCHEMA
 
 

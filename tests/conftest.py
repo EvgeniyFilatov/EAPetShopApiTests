@@ -1,7 +1,7 @@
 import pytest
 import random
 import logging
-from api_client import client
+from src.api.api_client import client
 
 logger = logging.getLogger(__name__)
 

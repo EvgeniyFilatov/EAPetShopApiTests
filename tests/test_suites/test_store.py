@@ -1,8 +1,7 @@
 import random
 import allure
 import jsonschema
-import pytest
-from api_client import client
+from src.api.api_client import client
 from tests.schemas.store_schema import STORE_SCHEMA, INVENTORY_SCHEMA
 
 
