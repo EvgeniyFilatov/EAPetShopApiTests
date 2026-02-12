@@ -92,7 +92,7 @@ class TestStore:
 
         with allure.step('Проверка, что заказ удален'):
             get_response = client.get(f'/store/order/{order_id}')
-            assert get_response.status_code == 404, f'Код ответа не совпал с ожидаемым, код: {response.status_code}'
+            assert get_response.status_code == 404, f'Код ответа не совпал с ожидаемым, код: {get_response.status_code}'
 
     # ===== НЕГАТИВНЫЕ ТЕСТЫ =====
 

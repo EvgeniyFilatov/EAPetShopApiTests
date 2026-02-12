@@ -39,6 +39,5 @@ INVENTORY_SCHEMA = {
             'type': 'integer'
         }
     },
-    'required': ['approved'],
     'additionalProperties': False
 }
