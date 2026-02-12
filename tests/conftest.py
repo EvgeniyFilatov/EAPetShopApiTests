@@ -1,7 +1,17 @@
 import pytest
 import random
 import logging
+import sys
 from src.api.api_client import client
+
+# 🌟 ВАЖНО: Настройка логирования для ВСЕХ тестов
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s | %(name)-25s | %(levelname)-8s | %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)  # Вывод в консоль
+    ]
+)
 
 logger = logging.getLogger(__name__)
 
